@@ -9,7 +9,7 @@ class DRAW {
 };
 
 //Below classes will control all the functions related to fees
-/*
+
 class FEE {
     private:
         int Class;
@@ -105,7 +105,7 @@ void mainmenu() {
             mainmenu();
     }//end of switch
 }//end of mainmenu
-*/
+
 //function to draw a horizontal line
 void DRAW :: LINE_HOR(int col1, int col2, int row, char c) {
     for(col1; col1<=col2; col1++) {
@@ -167,4 +167,134 @@ void DRAW :: BOX(int col1, int row1, int col2, int row2, char c) {
 
     LINE_VER(row1, row2, col1, l2);
     LINE_VER(row1, row2, col2, l2);
+}
+
+//function to add Fee Structure in fee file
+
+void FEE :: ADDITION() {
+    fstream file;
+    file.open("FEE.DAT", ios::in);  //open file in read mode
+    if(!file.fail())
+        return ;
+    file.close();
+    file.open("FEE.DAT", ios::app);
+    for(int i=0; i<=12; i++) {
+        Class  = i;
+        tuition = 0.0;
+        ac = 0.0;
+        science = 0.0;
+        computer = 0.0;
+        activity = 0.0;
+        file.write((char *) this, sizeof(FEE));
+    }
+    file.close();
+
+    MODIFY_RECORD(12, 450, 50, 60, 60, 50);
+    MODIFY_RECORD(11,450,50,60,60,50);  
+    MODIFY_RECORD(10,350,50,30,60,50);  
+    MODIFY_RECORD(9,350,50,20,60,50);  
+    MODIFY_RECORD(8,300,50,20,40,50);  
+    MODIFY_RECORD(7,300,50,20,40,50);  
+    MODIFY_RECORD(6,300,50,20,40,50);  
+    MODIFY_RECORD(5,250,50,0,40,40);  
+    MODIFY_RECORD(4,250,50,0,40,40);  
+    MODIFY_RECORD(3,250,50,0,40,40);  
+    MODIFY_RECORD(2,250,50,0,40,40);  
+    MODIFY_RECORD(1,250,50,0,40,40);
+}
+
+//FUnction to display total fee as list
+void FEE :: LIST() {
+    system("cls");
+    DRAW d;
+    d.BOX(1, 2, 80, 24, 218);
+    gotoxy(27, 3);
+    std::cout << "TOTAL FEES FOR THE CLASSES";
+    d.LINE_HOR(2, 79, 4, 196);
+    gotoxy(5, 5);
+    std::cout << "CLASS          TOTAL FEES";
+    d.LINE_HOR(2, 79, 6, 196);
+    d.LINE_HOR(2, 79, 6, 196);
+    float total;
+    int row = 8;
+    fstream file;
+    file.open("FEE.DAT", ios::in);
+    while(file.read((char *) this, sizeof(FEE))) {
+        total = tuition + ac + science + computer + activity;
+        gotoxy(6, row);
+        std::cout << Class;
+        gotoxy(25, row);
+        std::cout << total;
+        row++;
+    }
+
+    file.close();
+    gotoxy(5, 23);
+    std::cout << "Press any key to continue..............."; 
+    getch();
+    mainmenu();
+}
+
+//Function to display the record for the given class
+
+void FEE :: DISPLAY(int tclass) {
+    fstream file;
+    file.open("FEE.DAT", ios::in);
+    while(file.read((char *) this, sizeof(FEE))) {
+        if(Class == tclass) {
+            gotoxy(5, 5);
+            std::cout << "Class : " << Class;
+            gotoxy(5, 7);
+            std::cout << "~~~~~~~~~~~~~";
+            gotoxy(5, 8);
+            std::cout << "Tuition Fee : " << tuition;
+            gotoxy(5, 9);
+            std::cout << "Annual Charges Fee: " << ac;
+            gotoxy(5, 10);
+            std::cout << "Science Fee : " << science;
+            gotoxy(5, 11);
+            std::cout << "Computer Fee : " << computer;
+            gotoxy(5, 12);
+            std::cout << "Activity Fee : " << activity;
+            break;
+        }
+    }
+    file.close();
+}
+
+void FEE :: MODIFY_RECORD(int tclass, float ttuition, float tac, float tscience, float tcomputer, float tactivity) {
+    fstream file;
+    file.open("FEE.DAT", ios::in);
+    fstream temp;
+    temp.open("TEMP.DAT", ios::out);
+    file.seekg(0, ios::beg);
+    while(!file.eof()) {
+        file.read((char *) this, sizeof(FEE));
+        if(file.eof())
+            break;
+        if(tclass == Class) {
+            Class = tclass;
+            tuition = ttuition;
+            ac = tac;
+            science = tscience;
+            computer = tcomputer;
+            activity = tactivity;
+            temp.write((char *) this, sizeof(FEE));
+        } else {
+            temp.write((char *) this, sizeof(FEE));
+        }
+    }
+    file.close();
+    temp.close();
+    file.open("FEE.DAT", ios::out);
+    temp.open("TEMP.DAT", ios::in);
+    temp.seekg(0, ios::beg);
+    while(!temp.eof()) {
+        temp.read((char *) this, sizeof(FEE));
+        if(temp.eof())
+            break;
+        file.write((char *) this, sizeof(FEE));
+    }
+    file.close();
+    temp.close();
 }
