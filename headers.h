@@ -9,5 +9,3 @@
 #include <ctime>        // for time
 #include <direct.h>        // for delay
 #include <iomanip>      // for setw
-
-using namespace std;

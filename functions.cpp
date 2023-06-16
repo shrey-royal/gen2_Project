@@ -1,5 +1,6 @@
 #include "headers.h"
 #include "declarations.cpp"
+using namespace std;
 
 class DRAW
 {
@@ -49,7 +50,7 @@ void mainmenu()
         printf("*");
     }
 
-    for (lp = 15; li < 30; lp++)
+    for (lp = 15; lp < 30; lp++)
     {
         gotoxy(30, lp);
         Sleep(100);
@@ -108,7 +109,7 @@ void mainmenu()
 
     default:
         gotoxy(33, 40);
-        std::cout << "Illegal Choice Press any key to return to the Main Menu";
+        cout << "Illegal Choice Press any key to return to the Main Menu";
         getch();
         mainmenu();
     } // end of switch
@@ -120,7 +121,7 @@ void DRAW ::LINE_HOR(int col1, int col2, int row, char c)
     for (col1; col1 <= col2; col1++)
     {
         gotoxy(col1, row);
-        std::cout << c;
+        cout << c;
     }
 }
 
@@ -130,7 +131,7 @@ void DRAW ::LINE_VER(int row1, int row2, int col, char c)
     for (row1; row1 <= row2; row1++)
     {
         gotoxy(col, row1);
-        std::cout << c;
+        cout << c;
     }
 }
 
@@ -138,8 +139,8 @@ void DRAW ::LINE_VER(int row1, int row2, int col, char c)
 
 void DRAW ::BOX(int col1, int row1, int col2, int row2, char c)
 {
-    char ch = 218;           // top left corner character
-    char c1, c2, c3, c4;     // other characters
+    char ch = 218;         // top left corner character
+    char c1, c2, c3, c4;   // other characters
     char l1 = 196, l2 = 179; // line characters
 
     if (c == ch)
@@ -162,13 +163,13 @@ void DRAW ::BOX(int col1, int row1, int col2, int row2, char c)
     }
 
     gotoxy(col1, row1);
-    std::cout << c1;
+    cout << c1;
     gotoxy(col2, row1);
-    std::cout << c2;
+    cout << c2;
     gotoxy(col1, row2);
-    std::cout << c3;
+    cout << c3;
     gotoxy(col2, row2);
-    std::cout << c4;
+    cout << c4;
     col1++;
     col2--;
 
@@ -190,11 +191,11 @@ void DRAW ::BOX(int col1, int row1, int col2, int row2, char c)
 void FEE ::ADDITION()
 {
     fstream file;
-    file.open("FEE.DAT", ios::in); // open file in read mode
+    file.open("FEE.TXT", ios::in); // open file in read mode
     if (!file.fail())
         return;
     file.close();
-    file.open("FEE.DAT", ios::app);
+    file.open("FEE.TXT", ios::app);
     for (int i = 0; i <= 12; i++)
     {
         Class = i;
@@ -228,29 +229,29 @@ void FEE ::LIST()
     DRAW d;
     d.BOX(1, 2, 80, 24, 218);
     gotoxy(27, 3);
-    std::cout << "TOTAL FEES FOR THE CLASSES";
+    cout << "TOTAL FEES FOR THE CLASSES";
     d.LINE_HOR(2, 79, 4, 196);
     gotoxy(5, 5);
-    std::cout << "CLASS          TOTAL FEES";
+    cout << "CLASS          TOTAL FEES";
     d.LINE_HOR(2, 79, 6, 196);
     d.LINE_HOR(2, 79, 6, 196);
     float total;
     int row = 8;
     fstream file;
-    file.open("FEE.DAT", ios::in);
+    file.open("FEE.TXT", ios::in);
     while (file.read((char *)this, sizeof(FEE)))
     {
         total = tuition + ac + science + computer + activity;
         gotoxy(6, row);
-        std::cout << Class;
+        cout << Class;
         gotoxy(25, row);
-        std::cout << total;
+        cout << total;
         row++;
     }
 
     file.close();
     gotoxy(5, 23);
-    std::cout << "Press any key to continue...............";
+    cout << "Press any key to continue...............";
     getch();
     mainmenu();
 }
@@ -260,25 +261,25 @@ void FEE ::LIST()
 void FEE ::DISPLAY(int tclass)
 {
     fstream file;
-    file.open("FEE.DAT", ios::in);
+    file.open("FEE.TXT", ios::in);
     while (file.read((char *)this, sizeof(FEE)))
     {
         if (Class == tclass)
         {
             gotoxy(5, 5);
-            std::cout << "Class : " << Class;
+            cout << "Class : " << Class;
             gotoxy(5, 7);
-            std::cout << "~~~~~~~~~~~~~";
+            cout << "~~~~~~~~~~~~~";
             gotoxy(5, 8);
-            std::cout << "Tuition Fee : " << tuition;
+            cout << "Tuition Fee : " << tuition;
             gotoxy(5, 9);
-            std::cout << "Annual Charges Fee: " << ac;
+            cout << "Annual Charges Fee: " << ac;
             gotoxy(5, 10);
-            std::cout << "Science Fee : " << science;
+            cout << "Science Fee : " << science;
             gotoxy(5, 11);
-            std::cout << "Computer Fee : " << computer;
+            cout << "Computer Fee : " << computer;
             gotoxy(5, 12);
-            std::cout << "Activity Fee : " << activity;
+            cout << "Activity Fee : " << activity;
             break;
         }
     }
@@ -288,9 +289,9 @@ void FEE ::DISPLAY(int tclass)
 void FEE ::MODIFY_RECORD(int tclass, float ttuition, float tac, float tscience, float tcomputer, float tactivity)
 {
     fstream file;
-    file.open("FEE.DAT", ios::in);
+    file.open("FEE.TXT", ios::in);
     fstream temp;
-    temp.open("TEMP.DAT", ios::out);
+    temp.open("TEMP.TXT", ios::out);
     file.seekg(0, ios::beg);
     while (!file.eof())
     {
@@ -314,8 +315,8 @@ void FEE ::MODIFY_RECORD(int tclass, float ttuition, float tac, float tscience, 
     }
     file.close();
     temp.close();
-    file.open("FEE.DAT", ios::out);
-    temp.open("TEMP.DAT", ios::in);
+    file.open("FEE.TXT", ios::out);
+    temp.open("TEMP.TXT", ios::in);
     temp.seekg(0, ios::beg);
     while (!temp.eof())
     {
@@ -340,9 +341,9 @@ void FEE ::MODIFICATION(void)
     {
         valid = 1;
         gotoxy(5, 25);
-        std::cout << "Press <ENTER> for Exit";
+        cout << "Press <ENTER> for Exit";
         gotoxy(5, 5);
-        std::cout << "Enter class for the modification of the fee structure: ";
+        cout << "Enter class for the modification of the fee structure: ";
         gets(t1);
         t = atoi(t1); // converts string to integer
         tclass = t;
@@ -355,20 +356,20 @@ void FEE ::MODIFICATION(void)
         {
             valid = 0;
             gotoxy(5, 25);
-            std::cout << "Enter corretly";
+            cout << "Enter corretly";
             getch();
         }
     } while (!valid);
     system("cls");
     gotoxy(71, 1);
-    std::cout << "<0>=Exit";
+    cout << "<0>=Exit";
     DISPLAY(tclass);
     gotoxy(5, 25);
 
     do
     {
         gotoxy(5, 15);
-        std::cout << "Do you want to modify the fee structure (y/n): ";
+        cout << "Do you want to modify the fee structure (y/n): ";
         ch = getche();
         if (ch == '0')
             return;
@@ -379,19 +380,19 @@ void FEE ::MODIFICATION(void)
     float ttuition = 0.0, tac = 0.0, tscience = 0.0, tcomputer = 0.0, tactivity = 0.0;
     gotoxy(5, 13);
     gotoxy(5, 17);
-    std::cout << "Enter new Tuition Fee : ";
+    cout << "Enter new Tuition Fee : ";
     gotoxy(5, 18);
-    std::cout << "Enter new Annual Charges Fee : ";
+    cout << "Enter new Annual Charges Fee : ";
     gotoxy(5, 19);
-    std::cout << "Enter new Science Fee : ";
+    cout << "Enter new Science Fee : ";
     gotoxy(5, 20);
-    std::cout << "Enter new Computer Fee : ";
+    cout << "Enter new Computer Fee : ";
     gotoxy(5, 21);
-    std::cout << "Enter new Activity Fee : ";
+    cout << "Enter new Activity Fee : ";
 
     int modified = 5;
     fstream file;
-    file.open("FEE.DAT", ios::in);
+    file.open("FEE.TXT", ios::in);
 
     while (file.read((char *)this, sizeof(FEE)))
         if (Class == tclass)
@@ -414,13 +415,13 @@ void FEE ::MODIFICATION(void)
         {
             valid = 0;
             gotoxy(5, 27);
-            std::cout << "Enter correctly";
+            cout << "Enter correctly";
             getch();
         }
         modified--;
         ttuition = tuition;
         gotoxy(20, 17);
-        std::cout << ttuition;
+        cout << ttuition;
     } while (!valid);
 
     if (strlen(t1) == 0)
@@ -428,14 +429,14 @@ void FEE ::MODIFICATION(void)
         modified--;
         ttuition = tuition;
         gotoxy(20, 17);
-        std::cout << ttuition;
+        cout << ttuition;
     }
 
     do
     {
         valid = 1;
         gotoxy(5, 27);
-        std::cout << "Enter ANNUAL CHARGES fee or Press <ENTER> for no change";
+        cout << "Enter ANNUAL CHARGES fee or Press <ENTER> for no change";
         gotoxy(26, 18);
         gets(t1);
         t2 = atof(t1);
@@ -448,7 +449,7 @@ void FEE ::MODIFICATION(void)
         {
             valid = 0;
             gotoxy(5, 27);
-            std::cout << "Enter correctly";
+            cout << "Enter correctly";
             getch();
         }
     } while (!valid);
@@ -457,13 +458,13 @@ void FEE ::MODIFICATION(void)
         modified--;
         tac = ac;
         gotoxy(26, 18);
-        std::cout << tac;
+        cout << tac;
     }
     do
     {
         valid = 1;
         gotoxy(5, 27);
-        std::cout << "Enter SCIENCE FEES or Press <ENTER> for no change";
+        cout << "Enter SCIENCE FEES or Press <ENTER> for no change";
         gotoxy(19, 19);
         gets(t1);
         t2 = atof(t1);
@@ -476,7 +477,7 @@ void FEE ::MODIFICATION(void)
         {
             valid = 0;
             gotoxy(5, 27);
-            std::cout << "Enter correctly";
+            cout << "Enter correctly";
             getch();
         }
     } while (!valid);
@@ -485,13 +486,13 @@ void FEE ::MODIFICATION(void)
         modified--;
         tscience = science;
         gotoxy(19, 19);
-        std::cout << tscience;
+        cout << tscience;
     }
     do
     {
         valid = 1;
         gotoxy(5, 27);
-        std::cout << "Enter COMPUTER FEES or Press <ENTER> for no change";
+        cout << "Enter COMPUTER FEES or Press <ENTER> for no change";
         gotoxy(19, 20);
         gets(t1);
         t2 = atof(t1);
@@ -504,7 +505,7 @@ void FEE ::MODIFICATION(void)
         {
             valid = 0;
             gotoxy(5, 27);
-            std::cout << "Enter correctly";
+            cout << "Enter correctly";
             getch();
         }
     } while (!valid);
@@ -513,13 +514,13 @@ void FEE ::MODIFICATION(void)
         modified--;
         tcomputer = computer;
         gotoxy(19, 20);
-        std::cout << tcomputer;
+        cout << tcomputer;
     }
     do
     {
         valid = 1;
         gotoxy(5, 27);
-        std::cout << "Enter ACTIVITY FEES or Press <ENTER> for no change";
+        cout << "Enter ACTIVITY FEES or Press <ENTER> for no change";
         gotoxy(19, 21);
         gets(t1);
         t2 = atof(t1);
@@ -532,7 +533,7 @@ void FEE ::MODIFICATION(void)
         {
             valid = 0;
             gotoxy(5, 27);
-            std::cout << "Enter correctly";
+            cout << "Enter correctly";
             getch();
         }
     } while (!valid);
@@ -541,7 +542,7 @@ void FEE ::MODIFICATION(void)
         modified--;
         tactivity = activity;
         gotoxy(19, 21);
-        std::cout << tactivity;
+        cout << tactivity;
     }
     if (!modified)
         mainmenu();
@@ -549,7 +550,7 @@ void FEE ::MODIFICATION(void)
     do
     {
         gotoxy(5, 25);
-        std::cout << "Do you want to save (y/n) : ";
+        cout << "Do you want to save (y/n) : ";
         ch = getche();
         if (ch == '0')
             return;
@@ -559,9 +560,9 @@ void FEE ::MODIFICATION(void)
         return;
     MODIFY_RECORD(tclass, ttuition, tac, tscience, tcomputer, tactivity);
     gotoxy(5, 27);
-    std::cout << "Record Modified";
+    cout << "Record Modified";
     gotoxy(5, 29);
-    std::cout << "Press any key to continue...........";
+    cout << "Press any key to continue...........";
     getch();
     mainmenu();
 }
@@ -576,9 +577,9 @@ void FEE :: FEE_SLIP(void) {
     do {
         valid=1;
         gotoxy(5, 25);
-        std::cout << "Press <ENTER> for Exit";
+        cout << "Press <ENTER> for Exit";
         gotoxy(5, 5);
-        std::cout << "Enter Class to see the FEE Structure: ";
+        cout << "Enter Class to see the FEE Structure: ";
         gets(t1);
         t = atoi(t1);
         tclass = t;
@@ -587,7 +588,7 @@ void FEE :: FEE_SLIP(void) {
         if(tclass < 1 || tclass > 12) {
             valid=0;
             gotoxy(5, 27);
-            std::cout << "Enter correctly";
+            cout << "Enter correctly";
             getch();
         }
     } while (!valid);
@@ -595,15 +596,15 @@ void FEE :: FEE_SLIP(void) {
 
     do {
         gotoxy(5, 25);
-        std::cout << "Enter Name of the Student";
-        valid = 1;  //next time the loop will not be executed (!valid)
+        cout << "Enter Name of the Student";
+        valid = 1;//next time the loop will not be executed (!valid)
         gotoxy(5, 7);
-        std::cout << "Name: ";
+        cout << "Name: ";
         gets(name);
         if(strlen(name) < 1 || strlen(name) > 25) {
             valid = 0;
             gotoxy(5, 25);
-            std::cout << "Name Should not be greater than 25";
+            cout << "Name Should not be greater than 25";
             getch();
         }
     } while(!valid);
@@ -611,39 +612,82 @@ void FEE :: FEE_SLIP(void) {
     DRAW d;
     d.BOX(20, 2, 61, 24, 987);
     gotoxy(24, 3);
-    std::cout << "         YOUR SCHOOL      ";
+    cout << "         YOUR SCHOOL      ";
     int d1, m1, y1;
     time_t td = time(0);
     struct tm * now = localtime( & td );
     d1 = now->tm_mday;
     m1 = (now->tm_mon +1);
-    y1 = (now->tm_year +1900);  //year since 1900
+    y1 = (now->tm_year +1900);//year since 1900
     gotoxy(45, 4);
-    std::cout << "Date: " << d1 << "/" << m1 << "/" << y1;
+    cout << "Date: " << d1 << "/" << m1 << "/" << y1;
     d.LINE_HOR(21, 60, 5, 196);
     gotoxy(22, 6);
-    std::cout << "Name: " << name;
+    cout << "Name: " << name;
     gotoxy(22, 7);
-    std::cout << "Class: " << tclass;
+    cout << "Class: " << tclass;
     d.LINE_HOR(21, 60, 8, 196);
     gotoxy(21, 9);
-    std::cout << "    PARTICULARS               AMOUNT";
+    cout << "    PARTICULARS               AMOUNT";
     d.LINE_HOR(21, 60, 10, 196);
     d.LINE_HOR(21, 60, 10, 196);
     d.LINE_HOR(21, 60, 10, 196);
     gotoxy(25, 21);
-    std::cout << "TOTAL";
+    cout << "TOTAL";
     gotoxy(54, 23);
-    std::cout << "CASHIER";
+    cout << "CASHIER";
     fstream file;
-    file.open("FEE.DAT", ios::in);
+    file.open("FEE.TXT", ios::in);
     while(!file.eof()) {
         file.read((char *) this, sizeof(FEE));
         if(Class == tclass) {
-            std::cout << "Found" << endl;
+            cout << "Found" << endl;
             break;
         }
         file.close();
     }
     float total=0.0;
+    gotoxy(23, 12);
+    cout << "Tuition fees               " << setprecision(2) << tuition;
+    total = total+tuition;
+    gotoxy(23, 13);
+    cout <<"Annual charges fees       " << setprecision(2) <<ac;
+    total = total+ac;
+    gotoxy(23,14);
+    cout <<"Science fees              " << setprecision(2) <<science;
+    total = total+science;
+    gotoxy(23,15);
+    cout <<"Computer fees             " << setprecision(2) <<computer;
+    total = total+computer;
+    gotoxy(23,16);
+    cout <<"Activity fees             " << setprecision(2) <<activity;
+    total = total+activity;
+    d.LINE_VER(9,21,46,179);
+    char tt[15];
+    sprintf(tt,"%f",total);
+    gotoxy(49,21);
+    cout <<tt;
+    gotoxy(33,40);
+    cout<<"Press any key to return to the main menu........";
+    getch();
+    mainmenu();
+}
+
+void FEE :: HELP() {
+    system("cls");
+
+    cout<<"This is a fee structure program"<<endl;
+    cout<<"It can be used to :  "<<endl;
+    cout<<"1. View the fee slip of a student of a class"<<endl;
+    cout<<"2. Modify the fee structure of the school"<<endl;
+    cout<<"3. View the fee structure of the school in the form of a list"<<endl;
+    cout<<"The menu functions are described as follows"<<endl;
+    cout<<"1. FEE SLIP:  This function displays the fee slip for a givenstudent"<<endl;
+    cout<<" from the class entered by the user. "<<endl;
+    cout<<"2. MODIFY:    This function modifies the fee structure for a give class."<<endl;
+    cout<<" The user can change the fees for various fields"<<endl;
+    cout<<"3. LIST:      This function displays the list of total fees for all the"<<endl;
+    cout<<"Press any key to continue..........."<<endl;
+    getch();
+    mainmenu();
 }
